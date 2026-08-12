@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Monogram matching the "AB." wordmark in the top nav. Letterforms are
+       stroked rather than filled so they stay legible when the tab scales the
+       icon down to 16px. -->
+  <rect width="32" height="32" rx="7" fill="#4f46e5" />
+  <g
+    fill="none"
+    stroke="#fff"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M6 23 10 9.5 14 23M7.7 18.6h4.6" />
+    <path d="M18 9.5V23M18 9.5h3.8a3.4 3.4 0 0 1 0 6.8H18m0 0h4.3a3.35 3.35 0 0 1 0 6.7H18" />
+  </g>
+</svg>

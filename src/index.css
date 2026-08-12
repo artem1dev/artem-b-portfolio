@@ -1,0 +1,191 @@
+@import 'tailwindcss';
+
+/* Enable the `dark:` variant off a class on <html> rather than the media query,
+   so the theme toggle can override the OS preference. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens — LIGHT (default) ─────────────────────────────────────
+   Warm paper base, near-black ink, indigo accent.
+   Change --accent (+ --accent-dim / --accent-glow) to re-skin the whole site. */
+:root {
+  --bg: #faf9f7;
+  --bg-secondary: #f2f0ec;
+  --bg-card: #ffffff;
+  --border: #e4e0d8;
+  --border-hover: #cfc9bd;
+
+  --accent: #4f46e5;
+  --accent-dim: #4338ca;
+  --accent-glow: rgba(79, 70, 229, 0.09);
+
+  --text-primary: #14131a;
+  --text-secondary: #55525f;
+  --text-muted: #8b8798;
+
+  --avatar-from: #ece9ff;
+  --avatar-to: #f2f0ec;
+
+  --grid-line: rgba(20, 19, 26, 0.055);
+  --overlay: rgba(20, 19, 26, 0.45);
+
+  --nav-height: 60px;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  color-scheme: light;
+}
+
+/* ── Design tokens — DARK ────────────────────────────────────────────────── */
+.dark {
+  --bg: #0b0b0f;
+  --bg-secondary: #121218;
+  --bg-card: #141419;
+  --border: #26252e;
+  --border-hover: #3a3846;
+
+  --accent: #a5b4fc;
+  --accent-dim: #818cf8;
+  --accent-glow: rgba(165, 180, 252, 0.12);
+
+  --text-primary: #f5f4f2;
+  --text-secondary: #a5a2b0;
+  --text-muted: #6e6b7b;
+
+  --avatar-from: #22203a;
+  --avatar-to: #121218;
+
+  --grid-line: rgba(245, 244, 242, 0.045);
+  --overlay: rgba(0, 0, 0, 0.72);
+
+  color-scheme: dark;
+}
+
+/* Expose tokens to Tailwind utilities (text-accent, bg-card, border-line, …) */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-card: var(--bg-card);
+  --color-line: var(--border);
+  --color-line-hover: var(--border-hover);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  /* offset anchors so the sticky nav never covers a heading */
+  scroll-padding-top: calc(var(--nav-height) + 2rem);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Headings are the body sans at a heavier weight — presence comes from weight
+   and negative tracking, which stays legible at the small sizes (project and
+   education titles) where a display serif falls apart. Tracking tightens as the
+   size grows, since optical spacing looks looser the larger the type gets. */
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  letter-spacing: -0.035em;
+}
+
+::selection {
+  background: var(--accent-glow);
+  color: var(--text-primary);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-hover) transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
+}
+
+/* ── Backdrop: engineering grid, fading out down the page ───────────────── */
+.grid-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 85%);
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+.card-hover {
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+.card-hover:hover {
+  border-color: var(--border-hover);
+  background-color: var(--bg-card);
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Underline that grows from the left on hover — used on inline links. */
+.link-underline {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.3s ease;
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
